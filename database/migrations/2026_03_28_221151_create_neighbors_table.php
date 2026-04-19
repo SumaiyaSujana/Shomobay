@@ -17,6 +17,7 @@ return new class extends Migration
 
         $table->unsignedBigInteger('user_id'); 
         // Links to users table
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         $table->string('building_name'); 
         // Apartment/building name
