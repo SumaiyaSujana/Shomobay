@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Neighbor;
+use App\Models\Vendor;
+use App\Models\Admin;
+use App\Models\GroupCart;
+use App\Models\CartContribution;
 
 class User extends Authenticatable
 {
@@ -29,6 +34,7 @@ class User extends Authenticatable
         ];
     }
 
+    
     public function neighbor()
     {
         return $this->hasOne(Neighbor::class);
@@ -42,5 +48,15 @@ class User extends Authenticatable
     public function admin()
     {
         return $this->hasOne(Admin::class);
+    }
+
+    public function createdGroupCarts()
+    {
+        return $this->hasMany(GroupCart::class, 'creator_id');
+    }
+
+    public function cartContributions()
+    {
+        return $this->hasMany(CartContribution::class);
     }
 }
