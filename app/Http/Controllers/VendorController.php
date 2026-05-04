@@ -24,10 +24,9 @@ class VendorController extends Controller
 
         return back()->with('success', 'Your trade license has been uploaded for Admin review!');
         }
-// Show the Vendor Dashboard with active carts
+
     public function dashboard() {
-        // In a real app, we would fetch carts from the database here.
-        // For now, we will pass some dummy data to build the UI.
+
         $activeCarts = [
             ['id' => 1, 'item' => 'Potatoes', 'targetWeight' => 50, 'currentWeight' => 50, 'status' => 'ready_for_bids'],
             ['id' => 2, 'item' => 'Onions', 'targetWeight' => 100, 'currentWeight' => 100, 'status' => 'ready_for_bids'],
@@ -36,14 +35,14 @@ class VendorController extends Controller
         return view('vendor.dashboard', compact('activeCarts'));
     }
 
-    // Process the submitted bid
+
     public function submitBid(Request $request) {
         $request->validate([
             'cart_id' => 'required|integer',
             'bid_amount' => 'required|numeric|min:1',
         ]);
 
-        // Logic to save the bid to the database will go here.
+ 
         return back()->with('success', 'Your bid of ৳' . $request->bid_amount . ' has been successfully placed!');
     }
 
@@ -63,5 +62,15 @@ class VendorController extends Controller
         return view('vendor.revenue-analytics', compact('monthlyEarnings', 'popularItems'));
     }
 
+    public function viewRouteOptimization() {
+   
+        $deliveryStops = [
+            ['name' => 'Farm/Warehouse (Start)', 'lat' => 23.8103, 'lng' => 90.4125],
+            ['name' => 'Apartment A (Drop 1)', 'lat' => 23.7925, 'lng' => 90.4078],
+            ['name' => 'Apartment B (Drop 2)', 'lat' => 23.7461, 'lng' => 90.3742]
+        ];
+
+        return view('vendor.route-optimization', compact('deliveryStops'));
+    }
 }
 
