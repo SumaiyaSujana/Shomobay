@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,3 +31,5 @@ Route::post('/finance/create-wallet', [FinanceController::class, 'createWallet']
 Route::get('/vendor/revenue-analytics', [VendorController::class, 'viewRevenueAnalytics']);
 
 Route::get('/vendor/route-optimization', [VendorController::class, 'viewRouteOptimization']);
+
+Route::get('/transaction/refunds', [TransactionController::class, 'triggerAutomatedRefund']);
