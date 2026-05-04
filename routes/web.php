@@ -36,3 +36,7 @@ Route::get('/transaction/refunds', [TransactionController::class, 'triggerAutoma
 
 Route::get('/cart', [CartController::class, 'viewCart']);
 Route::post('/cart/add', [CartController::class, 'addToCart']);
+
+// Sprint 3: Vendor Portal Routes
+Route::get('/vendor/verify', [VendorController::class, 'showVerificationPortal']);
+Route::post('/vendor/verify', [VendorController::class, 'uploadLicense']);

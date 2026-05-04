@@ -2,21 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Neighbor extends Model
+class Vendor extends Model
 {
     use HasFactory;
 
+    // Allowing these fields to be filled based on your UML diagram
     protected $fillable = [
-        'user_id',
-        'building_name',
-        'flat_number',
+        'businessName', 
+        'tradeLicenseFile', 
+        'isVerified'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

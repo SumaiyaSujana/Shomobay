@@ -9,24 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+public function up(): void
     {
-    Schema::create('vendors', function (Blueprint $table) {
-        $table->id();
-
-        $table->unsignedBigInteger('user_id');
-
-        $table->string('business_name');
-
-        $table->string('trade_license')->nullable(); 
-        // optional field
-
-        $table->boolean('is_verified')->default(false); 
-        // true/false
-
-        $table->timestamps();
-    });
-}
+        Schema::create('vendors', function (Blueprint $table) {
+            $table->id();
+            $table->string('businessName'); // Name of the farm or wholesale business
+            $table->string('tradeLicenseFile'); // The file path for the uploaded PDF/Image
+            $table->boolean('isVerified')->default(false); // Admin must approve them later
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
