@@ -28,3 +28,5 @@ Route::post('/finance/split-bill', [FinanceController::class, 'calculateSplitBil
 Route::post('/finance/create-wallet', [FinanceController::class, 'createWallet']);
 
 Route::get('/vendor/revenue-analytics', [VendorController::class, 'viewRevenueAnalytics']);
+
+Route::get('/vendor/route-optimization', [VendorController::class, 'viewRouteOptimization']);
