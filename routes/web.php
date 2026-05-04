@@ -40,3 +40,7 @@ Route::post('/cart/add', [CartController::class, 'addToCart']);
 // Sprint 3: Vendor Portal Routes
 Route::get('/vendor/verify', [VendorController::class, 'showVerificationPortal']);
 Route::post('/vendor/verify', [VendorController::class, 'uploadLicense']);
+
+// Sprint 3: Wholesaler Bidding Dashboard
+Route::get('/vendor/dashboard', [VendorController::class, 'dashboard']);
+Route::post('/vendor/bid', [VendorController::class, 'submitBid']);
