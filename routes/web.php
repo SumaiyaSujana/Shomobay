@@ -26,3 +26,5 @@ Route::post('/finance/hold', [FinanceController::class, 'holdForCart']);
 Route::post('/finance/refund', [FinanceController::class, 'refundHeld']);
 Route::post('/finance/split-bill', [FinanceController::class, 'calculateSplitBill']);
 Route::post('/finance/create-wallet', [FinanceController::class, 'createWallet']);
+
+Route::get('/vendor/revenue-analytics', [VendorController::class, 'viewRevenueAnalytics']);
