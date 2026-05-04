@@ -48,6 +48,20 @@ class VendorController extends Controller
     }
 
 
+    public function viewRevenueAnalytics() {
+  
+        $monthlyEarnings = [
+            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            'data' => [5000, 7500, 6200, 9800, 12400]
+        ];
+
+        $popularItems = [
+            'labels' => ['Potatoes', 'Onions', 'Tomatoes', 'Green Chilies'],
+            'data' => [300, 250, 150, 80]
+        ];
+
+        return view('vendor.revenue-analytics', compact('monthlyEarnings', 'popularItems'));
+    }
 
 }
 
