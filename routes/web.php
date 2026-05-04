@@ -33,3 +33,6 @@ Route::get('/vendor/revenue-analytics', [VendorController::class, 'viewRevenueAn
 Route::get('/vendor/route-optimization', [VendorController::class, 'viewRouteOptimization']);
 
 Route::get('/transaction/refunds', [TransactionController::class, 'triggerAutomatedRefund']);
+
+Route::get('/cart', [CartController::class, 'viewCart']);
+Route::post('/cart/add', [CartController::class, 'addToCart']);
