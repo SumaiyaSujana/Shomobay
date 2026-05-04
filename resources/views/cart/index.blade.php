@@ -17,6 +17,20 @@
             </p>
         </div>
 
+        <div class="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-400 mb-6 shadow-sm">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-yellow-800 mb-1">Dynamic Price Calculator 📉</h3>
+                    <p class="text-gray-700">The more your neighborhood buys, the cheaper it gets!</p>
+                    <p class="text-sm text-gray-500 mt-1">Price drops by ৳2 for every 5kg added to the cart.</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-lg text-gray-500 line-through">Base: ৳{{ $basePricePerKg }}/kg</p>
+                    <p class="text-3xl font-extrabold text-green-600">Current: ৳{{ $currentPricePerKg }}/kg</p>
+                </div>
+            </div>
+        </div>
+
         @if($cart->status == 'Open')
         <form action="/cart/add" method="POST" class="mb-8 bg-gray-50 p-4 rounded border">
             @csrf
@@ -29,15 +43,31 @@
         </form>
         @endif
 
-        <h3 class="text-xl font-bold mb-4">Current Cart Items</h3>
-        <ul class="border rounded divide-y">
-            @foreach($items as $item)
-                <li class="p-4 flex justify-between">
-                    <span><strong>{{ $item->neighbor_name }}</strong> added {{ $item->vegetable_name }}</span>
-                    <span class="font-bold text-gray-700">{{ $item->weight_kg }} kg</span>
-                </li>
-            @endforeach
-        </ul>
+<h3 class="text-xl font-bold mb-4 mt-8 text-gray-800">Automated Split-Bill 🧾</h3>
+        <div class="overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+            <table class="w-full text-left border-collapse bg-white">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 border-b border-gray-200">
+                        <th class="p-4 font-semibold">Neighbor</th>
+                        <th class="p-4 font-semibold">Item</th>
+                        <th class="p-4 font-semibold">Weight</th>
+                        <th class="p-4 font-semibold text-right">Total Owed</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach($items as $item)
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4"><strong>{{ $item->neighbor_name }}</strong></td>
+                            <td class="p-4 text-gray-600">{{ $item->vegetable_name }}</td>
+                            <td class="p-4 text-gray-600">{{ $item->weight_kg }} kg</td>
+                            <td class="p-4 text-right font-bold text-red-600">
+                                ৳{{ number_format($item->weight_kg * $currentPricePerKg, 2) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </body>
