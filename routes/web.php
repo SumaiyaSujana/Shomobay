@@ -53,3 +53,7 @@ Route::post('/admin/accept-bid/{id}', [AdminController::class, 'acceptBid']);
 // Sprint 4: Vendor Registration & Uploads
 Route::get('/vendor/register', [VendorApplicationController::class, 'showForm']);
 Route::post('/vendor/register', [VendorApplicationController::class, 'submitApplication']);
+
+// Sprint 5: Admin Vendor Approvals
+Route::post('/admin/vendor/{id}/approve', [\App\Http\Controllers\AdminController::class, 'approveVendor']);
+Route::post('/admin/vendor/{id}/reject', [\App\Http\Controllers\AdminController::class, 'rejectVendor']);

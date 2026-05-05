@@ -5,7 +5,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-800 p-10 text-white">
+<div class="mb-12">
+            <h2 class="text-3xl font-bold text-white mb-2">New Vendor Applications 🧑‍🌾</h2>
+            <p class="text-gray-400 mb-6">Review Trade Licenses and approve new wholesalers.</p>
 
+            @if($applications->isEmpty())
+                <div class="bg-[#1e293b] p-6 rounded-lg text-gray-400 border border-gray-700">
+                    No pending vendor applications.
+                </div>
+            @else
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    @foreach($applications as $app)
+                        <div class="bg-[#1e293b] p-6 rounded-lg border border-gray-700 shadow-lg">
+                            <h3 class="text-xl font-bold text-blue-400 mb-2">{{ $app->business_name }}</h3>
+                            <p class="text-gray-300 mb-4">Status: <span class="text-yellow-400">{{ $app->status }}</span></p>
+                            
+                            <a href="{{ asset('storage/' . $app->document_path) }}" target="_blank" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded mb-6 transition">
+                                📄 View Uploaded Document
+                            </a>
+
+                            <div class="flex gap-4">
+                                <form action="/admin/vendor/{{ $app->id }}/approve" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+                                        Approve
+                                    </button>
+                                </form>
+                                <form action="/admin/vendor/{{ $app->id }}/reject" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition">
+                                        Reject
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+        
+        <hr class="border-gray-700 my-8">
     <div class="max-w-5xl mx-auto">
         <h2 class="text-3xl font-bold text-white mb-2">Admin Panel: Bid Approvals ⚖️</h2>
         <p class="text-gray-400 mb-6">Review vendor bids and close neighborhood carts.</p>
