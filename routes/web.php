@@ -6,7 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\VendorApplicationController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -49,3 +49,7 @@ Route::post('/vendor/bid', [VendorController::class, 'submitBid']);
 // Sprint 3: Admin Approval Panel
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 Route::post('/admin/accept-bid/{id}', [AdminController::class, 'acceptBid']);
+
+// Sprint 4: Vendor Registration & Uploads
+Route::get('/vendor/register', [VendorApplicationController::class, 'showForm']);
+Route::post('/vendor/register', [VendorApplicationController::class, 'submitApplication']);
