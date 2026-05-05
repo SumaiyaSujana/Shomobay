@@ -13,4 +13,9 @@ class GroupCart extends Model
         'current_weight_kg', 
         'status'
     ];
+
+// Connects the cart to its bids
+    public function bids() {
+        return $this->hasMany(Bid::class, 'group_cart_id');
+    }
 }
