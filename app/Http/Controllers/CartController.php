@@ -10,11 +10,10 @@ class CartController extends Controller
 {
     // 1. Show the Cart Page & Run Price Calculator
 // 1. Show the Cart Page & Run Price Calculator
+// 1. Show the Cart Page & Run Price Calculator
     public function viewCart() {
-        // Find the latest cart regardless of if it is Open or Locked
         $cart = GroupCart::latest()->first();
 
-        // If no cart exists at all, create the very first one
         if (!$cart) {
             $cart = GroupCart::create([
                 'neighborhood_name' => 'Bashundhara R/A', 
@@ -26,13 +25,27 @@ class CartController extends Controller
 
         $items = CartItem::where('group_cart_id', $cart->id)->get();
 
-        // --- SPRINT 1: DYNAMIC PRICE-DROP CALCULATOR LOGIC ---
+        // --- SPRINT 1: DYNAMIC PRICE-DROP ESTIMATE ---
         $basePricePerKg = 100; 
         $discountLevels = floor($cart->current_weight_kg / 5); 
         $discountAmount = $discountLevels * 2; 
         $currentPricePerKg = max(60, $basePricePerKg - $discountAmount);
 
-        return view('cart.index', compact('cart', 'items', 'basePricePerKg', 'currentPricePerKg'));
+        // --- SPRINT 3: CHECK FOR ACCEPTED BID ---
+        $acceptedBid = null;
+        if ($cart->status == 'Closed (Order Placed)') {
+            // Find the winning bid
+            $acceptedBid = \App\Models\Bid::where('group_cart_id', $cart->id)
+                                          ->where('status', 'Accepted')
+                                          ->first();
+            
+            // Override the estimated price with the final vendor price!
+            if ($acceptedBid) {
+                $currentPricePerKg = $acceptedBid->price_per_kg;
+            }
+        }
+
+        return view('cart.index', compact('cart', 'items', 'basePricePerKg', 'currentPricePerKg', 'acceptedBid'));
     }
 
     // 2. The Group Cart Engine & Threshold Validator

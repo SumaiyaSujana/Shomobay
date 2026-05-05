@@ -15,23 +15,33 @@
             
             @if($cart->status == 'Open')
                 <p class="text-lg font-bold mt-2 text-green-600">Status: Open ✅</p>
-            @else
+            @elseif($cart->status == 'Locked (Ready for Bidding)')
                 <p class="text-lg font-bold mt-2 text-red-600">Status: {{ $cart->status }} 🔒</p>
+            @else
+                <p class="text-lg font-bold mt-2 text-purple-600">Status: {{ $cart->status }} 📦</p>
             @endif
         </div>
 
-        <div class="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-400 mb-6 shadow-sm">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h3 class="text-2xl font-bold text-yellow-800 mb-1">Dynamic Price Calculator 📉</h3>
-                    <p class="text-gray-700">The more your neighborhood buys, the cheaper it gets!</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-lg text-gray-500 line-through">Base: ৳{{ $basePricePerKg }}/kg</p>
-                    <p class="text-3xl font-extrabold text-green-600">Current: ৳{{ $currentPricePerKg }}/kg</p>
+        @if($cart->status == 'Closed (Order Placed)' && isset($acceptedBid))
+            <div class="bg-green-100 border-l-4 border-green-500 p-6 mb-6 shadow-sm rounded-r-lg">
+                <h3 class="text-2xl font-bold text-green-800 mb-2">🎉 Deal Closed!</h3>
+                <p class="text-lg text-green-800">The winning wholesaler is <strong>{{ $acceptedBid->vendor_name }}</strong>.</p>
+                <p class="text-lg text-green-800">The final locked-in price is <strong>৳{{ number_format($acceptedBid->price_per_kg, 2) }} / kg</strong>!</p>
+            </div>
+        @else
+            <div class="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-400 mb-6 shadow-sm">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-yellow-800 mb-1">Dynamic Price Calculator 📉</h3>
+                        <p class="text-gray-700">The more your neighborhood buys, the cheaper it gets!</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg text-gray-500 line-through">Base: ৳{{ $basePricePerKg }}/kg</p>
+                        <p class="text-3xl font-extrabold text-green-600">Current: ৳{{ $currentPricePerKg }}/kg</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
 
         @if($cart->status == 'Open')
             <form action="/cart/add" method="POST" class="mb-8 bg-gray-50 p-4 rounded border">
@@ -43,11 +53,10 @@
                     <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 font-bold">Add to Cart</button>
                 </div>
             </form>
-        @else
+        @elseif($cart->status == 'Locked (Ready for Bidding)')
             <div class="mb-8 bg-red-50 border-l-4 border-red-500 p-4 text-red-700">
                 <p class="font-bold">Cart is Locked!</p>
                 <p>This neighborhood has reached its 50kg goal. We are now accepting bids from wholesalers.</p>
-                <a href="/vendor/dashboard" class="text-blue-600 underline font-semibold mt-2 inline-block">View Wholesaler Bids →</a>
             </div>
         @endif
 
@@ -68,7 +77,7 @@
                             <td class="p-4"><strong>{{ $item->neighbor_name }}</strong></td>
                             <td class="p-4 text-gray-600">{{ $item->vegetable_name }}</td>
                             <td class="p-4 text-gray-600">{{ $item->weight_kg }} kg</td>
-                            <td class="p-4 text-right font-bold text-red-600">
+                            <td class="p-4 text-right font-bold {{ $cart->status == 'Closed (Order Placed)' ? 'text-green-600' : 'text-red-600' }}">
                                 ৳{{ number_format($item->weight_kg * $currentPricePerKg, 2) }}
                             </td>
                         </tr>
