@@ -9,6 +9,7 @@ use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorApplicationController;
+use App\Http\Controllers\GeofencedCartController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -78,3 +79,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 // Sprint 4 - Admin System Health Dashboard
 Route::get('/admin/system-health', [AdminSystemHealthController::class, 'index']);
+
+// Sprint 4 - Geofenced Cart Filtering
+Route::get('/cart/nearby', [GeofencedCartController::class, 'nearby']);
