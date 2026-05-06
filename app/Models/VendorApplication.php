@@ -9,10 +9,16 @@ class VendorApplication extends Model
 {
     use HasFactory;
 
-    // Tell Laravel it is safe to auto-fill these columns
+    // Added business_name and user_id to the fillable array
     protected $fillable = [
-        'business_name',
+        'user_id',
+        'business_name', 
         'document_path',
-        'status'
+        'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

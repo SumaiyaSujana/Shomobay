@@ -4,32 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\VendorApplication;
+use Illuminate\Support\Facades\Auth;
 
 class VendorApplicationController extends Controller
 {
-    // 1. Show the Application Form
-    public function showForm() {
+    public function showForm()
+    {
         return view('vendor.register');
     }
 
-    // 2. Handle the File Upload
-    public function submitApplication(Request $request) {
-        // Validate that they actually uploaded a safe file
+    public function submitApplication(Request $request)
+    {
         $request->validate([
             'business_name' => 'required|string|max:255',
-            'document' => 'required|file|mimes:pdf,jpg,png|max:2048', // Max 2MB
+            'document' => 'required|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Save the file into the 'storage/app/public/trade_licenses' folder
-        $path = $request->file('document')->store('trade_licenses', 'public');
+        $filePath = $request->file('document')->store('vendor_documents', 'public');
 
-        // Save the record in the database
         VendorApplication::create([
+            'user_id' => Auth::id(), 
             'business_name' => $request->business_name,
-            'document_path' => $path,
-            'status' => 'Pending',
+            'document_path' => $filePath,
+            'status' => 'pending',
         ]);
 
-        return back()->with('success', 'Trade License uploaded successfully! Waiting for admin approval.');
+        return redirect('/dashboard')->with('success', 'Application submitted successfully!');
+    }
+
+    public function approve($id)
+    {
+        $application = VendorApplication::findOrFail($id);
+        $application->update(['status' => 'approved']);
+
+        return redirect('/dashboard')->with('success', 'Vendor application approved!');
+    }
+
+    public function reject($id)
+    {
+        $application = VendorApplication::findOrFail($id);
+        $application->update(['status' => 'rejected']);
+
+        return redirect('/dashboard')->with('success', 'Vendor application rejected.');
     }
 }

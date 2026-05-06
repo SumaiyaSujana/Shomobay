@@ -1,48 +1,36 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\VendorApplicationController; 
+use App\Http\Controllers\VendorApplicationController;
+use App\Models\VendorApplication;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\AdminMiddleware;
-// --- NEW IMPORT FOR SPRINT 2 ---
-use App\Models\Product; 
 
-// Public Route: Updated to fetch real products from the database
+// 1. Home Page
 Route::get('/', function () {
-    $products = Product::all(); // This pulls everything from your new 'products' table
-    return view('welcome', compact('products'));
-});
+    return view('welcome');
+})->name('home');
 
-// Default Breeze Dashboard
+// 2. Dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $applications = VendorApplication::all(); 
+    $lockedCarts = collect(); 
+    return view('admin.dashboard', compact('applications', 'lockedCarts'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// ==========================================
-// SECURE ROUTES (Only logged-in users)
-// ==========================================
+// 3. Authenticated Routes
 Route::middleware('auth')->group(function () {
-    
-    // Breeze Profile Routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // --- YOUR SHOMOBAY ROUTES ---
-    
-    // Vendor Routes
+    // Vendor Application
     Route::get('/vendor/register', [VendorApplicationController::class, 'showForm']);
     Route::post('/vendor/register', [VendorApplicationController::class, 'submitApplication']);
 
-    // ==========================================
-    // ADMIN ONLY ROUTES (Protected by Bouncer)
-    // ==========================================
-    Route::middleware([AdminMiddleware::class])->group(function () {
-        Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-        Route::post('/admin/vendor/{id}/approve', [AdminController::class, 'approveVendor']);
-        Route::post('/admin/vendor/{id}/reject', [AdminController::class, 'rejectVendor']);
-    });
+    // Approve/Reject Actions
+    Route::post('/admin/vendor/{id}/approve', [VendorApplicationController::class, 'approve'])->name('admin.vendor.approve');
+    Route::post('/admin/vendor/{id}/reject', [VendorApplicationController::class, 'reject'])->name('admin.vendor.reject');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
