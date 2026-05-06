@@ -13,4 +13,10 @@ class CartItem extends Model
         'vegetable_name', 
         'weight_kg'
     ];
+
+    // A cart item can have one delivery token
+    public function deliveryToken()
+    {
+        return $this->hasOne(DeliveryToken::class);
+    }
 }

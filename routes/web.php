@@ -82,3 +82,7 @@ Route::get('/admin/system-health', [AdminSystemHealthController::class, 'index']
 
 // Sprint 4 - Geofenced Cart Filtering
 Route::get('/cart/nearby', [GeofencedCartController::class, 'nearby']);
+// Sprint 5 - QR Claim Tokens
+Route::get('/qr-token/scanner', [App\Http\Controllers\QrTokenController::class, 'scannerPage'])->name('qr.scanner');
+Route::post('/qr-token/claim', [App\Http\Controllers\QrTokenController::class, 'claim'])->name('qr.claim');
+Route::get('/qr-token/{cartItemId}', [App\Http\Controllers\QrTokenController::class, 'show'])->name('qr.show');
