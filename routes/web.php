@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SeasonalityAlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CartController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorApplicationController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -57,3 +59,18 @@ Route::post('/vendor/register', [VendorApplicationController::class, 'submitAppl
 // Sprint 5: Admin Vendor Approvals
 Route::post('/admin/vendor/{id}/approve', [\App\Http\Controllers\AdminController::class, 'approveVendor']);
 Route::post('/admin/vendor/{id}/reject', [\App\Http\Controllers\AdminController::class, 'rejectVendor']);
+
+// Sprint 4 - Admin & Map Manager: Seasonality Alerts
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/seasonality-alerts', [SeasonalityAlertController::class, 'index'])
+        ->name('seasonality-alerts.index');
+
+    Route::post('/seasonality-alerts', [SeasonalityAlertController::class, 'store'])
+        ->name('seasonality-alerts.store');
+
+    Route::patch('/seasonality-alerts/{seasonalityAlert}/publish', [SeasonalityAlertController::class, 'publish'])
+        ->name('seasonality-alerts.publish');
+
+    Route::delete('/seasonality-alerts/{seasonalityAlert}', [SeasonalityAlertController::class, 'destroy'])
+        ->name('seasonality-alerts.destroy');
+});
