@@ -13,9 +13,12 @@ public function up(): void
     {
         Schema::create('vendor_applications', function (Blueprint $table) {
             $table->id();
-            $table->string('business_name');
-            $table->string('document_path'); // This saves where the file lives!
-            $table->string('status')->default('Pending');
+            // Link to the user who is applying
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            // Store the path to the uploaded NID or Trade License
+            $table->string('document_path'); 
+            // Track approval status (defaults to pending so Admins can review it)
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }
