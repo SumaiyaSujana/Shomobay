@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminSystemHealthController;
 use App\Http\Controllers\SeasonalityAlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VendorController;
@@ -74,3 +75,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('/seasonality-alerts/{seasonalityAlert}', [SeasonalityAlertController::class, 'destroy'])
         ->name('seasonality-alerts.destroy');
 });
+
+// Sprint 4 - Admin System Health Dashboard
+Route::get('/admin/system-health', [AdminSystemHealthController::class, 'index']);
